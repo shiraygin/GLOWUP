@@ -1,0 +1,2200 @@
+
+
+package glowaupapp;
+
+
+import java.io.BufferedReader;
+import java.util.Scanner;
+import java.util.Date;
+import java.util.Random;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import Google.*; /*another package exists in this project*/
+
+/**
+ *
+ * @author zainab 
+ * 
+ * Students:  
+ *            ZAINAB ALKHATER --> number of CLASSES: 10 , (Chatgbt , Chat, Problems, Account , AdditonalServices , Quizzes, Grammer , SkinCareProductExtractor, Product, Glowaupapp )
+ *            ZAHRA AL-ZAIED  --> number of CLASSES: 4 , ( Accounts , Problems , AdditonalServices )
+ *            SUKINAH AL-ABBAS--> number of CLASSES: 3 , ( Accounts , Problems )
+ *            HAYA ALSUBIAe   --> number of CLASSES: 3 , ( Haircare,  ClientProfile, SkinCareProgram02)
+ *            ANFAL           --> number of CLASSES: 3 , ( Product , SkinCareProductExtractor , Rivew )
+ *            AMGAD & LAMA    --> number of CLASSES: 9 , ( ClientProfile , BodyMetrics, SkinCareProgram02, Haircare, Health challange )
+ */
+public class Glowaupapp {//zainab 
+    
+    static boolean ACC = false;//shadowing varible
+    
+    public static void main(String[] args) {
+ 
+        int noAcc = 0;
+        Account [] accounts = new Account[500];
+        int ProgramON = 1;
+        
+        char choice;
+        Scanner input = new Scanner(System.in);
+        
+       
+        
+        do {// the program should excute at least one time
+       MainMenu();
+       System.out.print("enter your choice: ");
+       choice = input.next().charAt(0);
+       accounts [noAcc] = new Account();// with evrey session a new account is created
+       boolean Listprogram = false;//To do list program
+       
+ 
+        switch (choice) {
+            case '1'://creating account
+                String Phone,email;
+                boolean AccountMode = true;
+                ACC = true;
+                
+                accounts[noAcc].generateId();
+                System.out.println("enter your name: ");
+                accounts[noAcc].name = input.next();
+                System.out.println("enter your Phone: ");
+                Phone = input.next();
+                System.out.println("enter your Email: ");
+                email = input.next();
+                
+                accounts[noAcc].setEmail(email);
+                accounts[noAcc].setPhone(Phone);
+                accounts[noAcc].generateId();
+                System.out.println("Account info: ");
+                System.out.println(accounts[noAcc].toString());//Accountinfo
+                String name2;
+                System.out.print("enter your glow up bot name?");
+                name2 = input.next();
+                Chatgbt bot1 = new Chatgbt(name2); 
+                System.out.println("Create a GLOW UP profile? y/n");
+               
+                String pf = input.next();
+                if(pf.equals("y")){accounts[noAcc].profile = true;}
+                
+                
+                
+            
+            case '2'://strange mode
+                AccountMode = true;
+                
+                Chat NewChat1 = new Chat();//create a new chat
+                int menu2=NewChat1.userchoice;//user choice is 1 by default
+                
+                while(AccountMode == true){
+                    
+//                if (AccountMode == true) {//to test the cases
+//                     SecondMenu();
+//                     menu2 = input.nextInt();}
+
+                    menu2 = NewChat1.userchoice;
+                if (accounts[noAcc].profile && ACC) {menu2 = 11;}
+                
+                    
+                    
+                switch (menu2) {
+                    case 1:{
+                Instrcyions();
+                accounts[noAcc].greeting();//generate a greeting for current user
+                NewChat1.startChat();//Start the chat
+                        break;}
+                    
+                    case 2:{//to do list
+                   Listprogram = true;
+                   AdditonalServices.TodoList(Listprogram);
+                   NewChat1.userchoice = 10;
+                        break;}
+                    
+                    case 9:{// to write Reviews
+                    AdditonalServices.UsersReview(accounts[noAcc].name);
+                    NewChat1.userchoice = 10;
+                        break;}
+                    
+                    case 0:{
+                   ProgramON = 0;
+                   AccountMode = false;
+                   
+                        break;}
+                    
+                    case 11:{//creating profile
+                     ACC = false; accounts[noAcc].profile = false;
+                     System.out.println("Enter client information:");
+                     String name = accounts[noAcc].name;
+                     System.out.print("Skin Type: ");
+                     String skinType = input.next();
+                     System.out.print("Hair Type: ");
+                     String hairType = input.next();
+                     System.out.print("Age: ");
+                     int age = input.nextInt();
+                     System.out.print("Height (cm): ");
+                     double height = input.nextDouble();
+                     System.out.print("Weight (kg): ");
+                     double weight = input.nextDouble();
+                     System.out.print("gender: ");
+                     String gender = input.next();
+
+        // Create an instance of ClientProfile with user input
+        ClientProfile clientProfile = new ClientProfile(name, skinType, hairType);
+        clientProfile.setAge(age);
+        clientProfile.setHeight(height);
+        clientProfile.setWeight(weight);
+        NewChat1.userchoice = 1;
+                        break;}
+                    
+                    case 4:{//bodymatrics
+                       
+                Scanner in =new Scanner(System.in);
+
+                System.out.print("Enter your height in meters: ");
+                double height = in.nextDouble();
+
+                System.out.print("Enter your weight in kilograms: ");
+                double weight = in.nextDouble();
+
+                System.out.print("Enter your age: ");
+                int age = in.nextInt();
+
+                System.out.print("Enter your gender (Male/Female): ");
+                String gender = in.next();
+
+                 BodyMetrics userMetrics = new BodyMetrics(height, weight, age, gender);
+                 System.out.println("\n" + userMetrics.toString());
+                 NewChat1.userchoice = 10;
+                        break;}
+                    
+                    case 6:{//haircare
+                        
+                    HairCareProgram hairCareProgram = new HairCareProgram();
+                    hairCareProgram.HairCare();
+                    NewChat1.userchoice = 10;
+                    break;}
+                    
+                 case 5:{
+                        
+                // instance of the SkinCareProgram
+                 SkinCareProgram02 skinCareProgram = new SkinCareProgram02();
+                 skinCareProgram.runSkinCareProgram();
+                 NewChat1.userchoice = 10;
+                    break;}
+
+                 
+                
+               case 8:{
+               Product product = new Product(accounts[noAcc].name);
+               product.product();
+               product.productRivew();
+               NewChat1.userchoice = 10;
+               break;}
+
+              
+                case 3:{
+        Scanner scanner = new Scanner(System.in);
+
+        // Welcome message
+        System.out.println("Welcome to the Health Challenges Program!");
+
+        // Challenge types
+        System.out.println("\nChallenge Types:");
+        System.out.println("1. Weight Management Challenge");
+        System.out.println("2. Skin Issues Challenge");
+        System.out.println("3. Hair Issues Challenge");
+
+        // Participant's name
+        
+        String participantName = accounts[noAcc].name;
+
+        // Create a table to track the challenges
+        String[][] challengeTable = new String[3][4];
+        challengeTable[0][0] = "Weight Management Challenge";
+        challengeTable[1][0] = "Skin Issues Challenge";
+        challengeTable[2][0] = "Hair Issues Challenge";
+
+        // Weight management challenge
+        System.out.println("\nWeight Management Challenge");
+        System.out.print("What is your current weight problem? ");
+        String weightProblem = scanner.nextLine();
+        System.out.print("Enter your target weight: ");
+        double weightTarget = scanner.nextDouble();
+        scanner.nextLine(); // Consume the newline character
+        System.out.print("Have you achieved your target weight? (yes/no): ");
+        String weightChallengeStatus = scanner.nextLine();
+        challengeTable[0][1] = weightProblem;
+        challengeTable[0][2] = weightChallengeStatus;
+        if (weightChallengeStatus.equalsIgnoreCase("yes")) {
+            System.out.println("Congratulations, " + participantName + "! You have achieved your target weight.");
+            challengeTable[0][3] = "You finished";
+        } else {
+            System.out.println("Keep up the good work, " + participantName + "! You can do it!");
+            challengeTable[0][3] = "Still in the challenge";
+        }
+
+        // Skin issues challenge
+        System.out.println("\nSkin Issues Challenge");
+        System.out.print("What is your current skin problem? ");
+        String skinProblem = scanner.nextLine();
+        System.out.print("Enter your target for improving skin health: ");
+        String skinTarget = scanner.nextLine();
+        System.out.print("Have you achieved your skin health target? (yes/no): ");
+        String skinChallengeStatus = scanner.nextLine();
+        challengeTable[1][1] = skinProblem;
+        challengeTable[1][2] = skinChallengeStatus;
+        if (skinChallengeStatus.equalsIgnoreCase("yes")) {
+            System.out.println("Congratulations, " + participantName + "! You have achieved your skin health target.");
+            challengeTable[1][3] = "You finished";
+        } else {
+            System.out.println("Don't give up, " + participantName + "! You're making progress!");
+            challengeTable[1][3] = "Still in the challenge";
+        }
+
+        // Hair issues challenge
+        System.out.println("\nHair Issues Challenge");
+        System.out.print("What is your current hair problem? ");
+        String hairProblem = scanner.nextLine();
+        System.out.print("Enter your target for improving hair health: ");
+        String hairTarget = scanner.nextLine();
+        System.out.print("Have you achieved your hair health target? (yes/no): ");
+        String hairChallengeStatus = scanner.nextLine();
+        challengeTable[2][1] = hairProblem;
+        challengeTable[2][2] = hairChallengeStatus;
+        if (hairChallengeStatus.equalsIgnoreCase("yes")) {
+            System.out.println("Congratulations, " + participantName + "! You have achieved your hair health target.");
+            challengeTable[2][3] = "You finished";
+        } else {
+            System.out.println("You're doing great, " + participantName + "! Keep pushing forward!");
+            challengeTable[2][3] = "Still in the challenge";
+        }
+
+        // Print the challenge table
+        printChallengeTable(challengeTable);
+        NewChat1.userchoice = 10;
+        break;}    
+ 
+        case 7:{Websearch.search();NewChat1.userchoice = 10; break;}
+         case 10:{NewChat1.ContuniueChat();break;}
+        
+
+
+                    default:
+                        NewChat1.userchoice = 12;
+                        System.out.println("error !!, try agian");} 
+                
+                     }//loop
+                
+                
+                break; //case 2 from main switch
+            
+            
+             case '0':{ProgramON = 0; break;}
+            
+                
+          
+            default:{
+                System.out.println("invalled input!!!!!");
+                ProgramON = 0;
+                break;}}
+        
+        } while (ProgramON == 1);
+    }//main method
+    
+    
+    public static void MainMenu() {//zahra //zainab
+
+        gotoxy(1, 2);
+        System.out.println("\n     **************************************************************");
+        gotoxy(6, 10);
+        System.out.println("                         Welcome to GLOW UP app!!!                          ");
+        gotoxy(6, 11);
+        System.out.println("\tMenu\n"
+                + "\t1-Create an account\t2-stranger Mode"
+                + "\n\t0-exit");
+        gotoxy(6, 11);
+        System.out.println("     **************************************************************");
+ }
+
+    public static void clearScreen() {//Zahra
+        System.out.print("\033[H\033[2J");//Zahra
+        System.out.flush();
+    }
+
+    public static void gotoxy(int x, int y) {
+        System.out.print("\033[" + y + ";" + x + "H");
+    }
+    
+    static int SecondMenu(){//the Second menu in the app, zainab, zahra
+        int next;
+        
+        gotoxy(1, 2);
+        System.out.println("     **************************************************************");
+        gotoxy(6, 10);
+        System.out.println("                         Choose from below                          ");
+        gotoxy(6, 11);
+        System.out.println("\tMenu\n"
+                + "\t1-new chat\t        2-Create ToDo List"
+                + "\n\t3-Health chalnging\t4-Body Metrics "
+                + "\n\t5-Skin care!!       \t6- Hair Care!!\n"
+                + "\t7-WEB SEARCH       \t8-Best Products!!"
+                + "\n\t9-Write a review  \t10-Back" );
+        gotoxy(6, 11);
+        System.out.println("     **************************************************************"
+                + "\nentr your choice: ");
+        
+                Scanner scanner = new Scanner(System.in);
+                next = scanner.nextInt();
+                return next; }
+    
+    static void Instrcyions(){//chat Instrcyions, zainab, zahra
+        Scanner scanner = new Scanner(System.in);
+        clearScreen();
+        gotoxy(1, 2);
+        System.out.println("     **************************************************************");
+        gotoxy(6, 10);
+        System.out.println("                         Read the instructions carfully                     ");
+        gotoxy(6, 11);
+        System.out.println("""
+                           
+                           1- To end the chat, type 'bye'
+                           2- To seek help, let the bot know you have a problem
+                           3- To provide the Program menu ask for the menu
+                           
+                           Are you ready to begin the chat?""");
+        gotoxy(6, 11);
+        
+        scanner.next();
+        if(scanner.hasNextLine()){//to dectet enter pressing
+            return;}}
+    
+      // Function to print the challenge table
+    public static void printChallengeTable(String[][] table) {
+        System.out.println("\nChallenge Status:");
+        System.out.println("---------------------------------------------------------------");
+        System.out.println("| Challenge                | Current Problem  | Status    |");
+        System.out.println("---------------------------------------------------------------");
+        for (String[] row : table) {
+            System.out.printf("| %-25s | %-16s | %-9s |%n", row[0], row[1], row[3]);
+        }
+        System.out.println("---------------------------------------------------------------");
+    }
+}//main class
+
+class Chat{//zainab alkhater
+    int userchoice;
+    
+    Chat(){ userchoice = 1;}
+    Date chatDate = new Date();
+    
+    void ContuniueChat(){//zainab
+        Scanner input = new Scanner(System.in);
+     
+        boolean exit = false , replay = false;
+        System.out.println("\n"+Chatgbt.name + ": welcome back");
+
+        while (!exit) {
+            System.out.print("you: ");String temp = input.nextLine();
+
+                  convert(temp);
+                if (temp.equalsIgnoreCase("bye") || temp.equalsIgnoreCase("BYE")) {
+                    System.out.println(Chatgbt.name+": Until we meet again!");
+                    exit = true; replay=true;userchoice=0; break;}
+                
+                    if (Chatgbt.containsWord(temp,"MENU") || Chatgbt.containsWord(temp,"MNEU" )){
+                    System.out.println(Chatgbt.name + ": wait a moment\n");
+                   userchoice = Glowaupapp.SecondMenu(); replay=true; exit = true; break;}
+                
+                if(replay){
+                    continue;}
+
+               if (!exit && !replay) {
+                Chatgbt.GenerateMessage(temp ,replay ); 
+             }
+              
+
+    
+     }}//continue chat method
+    
+    void startChat(){//zainab
+        Scanner input = new Scanner(System.in);
+        System.out.print("\nthis chat started at ");
+        System.out.println(chatDate.toString());
+        System.out.println("this is " + Chatgbt.name + " your Loyal giudnce");
+        
+
+        boolean exit = false , replay = false;
+
+        while (!exit) {
+            System.out.print("you: ");String temp = input.nextLine();
+
+                  convert(temp);
+                if (temp.equalsIgnoreCase("bye") || temp.equalsIgnoreCase("BYE")) {
+                    System.out.println(Chatgbt.name+": Until we meet again!");
+                    exit = true; replay=true; userchoice=0; break;}
+                
+                if (Chatgbt.containsWord(temp,"MENU") || Chatgbt.containsWord(temp,"MNEU" )){
+                    System.out.println(Chatgbt.name + ": wait a moment\n");
+                   userchoice = Glowaupapp.SecondMenu(); replay=true; exit = true; break;}
+                
+                if(replay){
+                    continue;}
+
+               if (!exit && !replay) {
+                Chatgbt.GenerateMessage(temp ,replay );
+             }
+              
+
+    
+     }}//start chat method
+    
+    static void DsiplayMessage(){
+        System.out.print(Chatgbt.name +": ");
+        System.out.println(Chatgbt.getMessage());//get the message from chatgbt class
+    }
+    static void convert(String word){
+        if(!word.equals(null)){
+            word = word.toLowerCase();}}
+    
+    
+}//chat class
+
+class Chatgbt extends Problems{//zainab alkhater
+    public static  String name;//chat bot name
+    public String [] Replay;
+    static Random random3 = new Random();
+//    static String Accname = Account.getName();
+    
+    
+    
+    static String [] SadVocablury = {"DEPRESSED", "MISERABLE", "GLOOMY", "HEARTBROKEN", "LONELY", 
+    "DESPAIR", "SORROW", "TEARFUL", "UNHAPPY", "MELANCHOLY", 
+    "UPSET", "PAIN", "ANGUISH", "DISHEARTENED", "WOEFUL", "ALONE",
+    "FORLORN", "WRETCHED", "HOPELESS", "REGRET", "TRAGIC","UNHAPPY", 
+    "SAD", "BAD", "BORED", "HATE" , "TIRED","SICK", "STUPID",
+    "EXAM","UGLY","DIE","DIYING","MISRABLE", "NO", "COLD"};
+    
+    static String [] HappyVocablury = {"HAPPY", "JOY", "SMILE", "CHEERFUL", "EXCITING",
+    "AWESOME", "WONDERFUL", "FANTASTIC", "AMAZING", "COOL","MUSIC","PROUD",
+    "DELIGHT", "PLEASURE", "GRATEFUL", "OPTIMISTIC", "SATISFYING","YES",
+    "CELEBRATION", "MERRY", "UPBEAT", "THRILLING", "ELATION","WOW",
+    "EXCELLENT", "ENJOYABLE", "VIBRANT", "LOVE","GREATFUl", "GREAT", "HAHA", "LAUGH", "GOOD", "BEST"};
+    
+    static String[] Vocabgreetings = {
+    "HELLO",
+    "HI", "HII","HIII",
+    "HEY", "HYE",
+    "MORNING",
+    "AFTERNOON",
+    "EVENING"};
+    
+    static String[] happyResponses = {
+            "That's cool!", "Great", 
+            "Happy to hear that!", "Wonderful", 
+            "Amazing", "Awesome", "AWESOME", "WONDERFUL",
+            "FANTASTIC !", "AMAZING", "COOL",
+            "Fantastic", "Incredible", "WOW",
+            "Outstanding", "You're doing fantastic", 
+            "I'm impressed", "Keep up the good work",
+            "Magical", "That's incredible!", "Fantastic news", 
+            "You're doing amazing!", "Splendid", 
+            "Unbelievable", "Outstanding", "OUTSTANDING", "EXCELLENT",
+            "PHENOMENAL!", "INCREDIBLE", "TERRIFIC",
+            "Impressive", "Marvelous", 
+            "Superb", "You're on fire", 
+            "I'm amazed", "Keep shining bright", "Fantastic work", 
+            "Exceptional", "Bravo", "Well done",
+            "Astonishing", "Brilliant", "Magnificent",
+            "You're a rockstar!", "Kudos to you", "Well executed",
+            "Exceptional", "Jaw-dropping", "Top-tier",
+            "Thumbs up", "High fives all around", "You're a star",
+            "Excellent", "Phenomenal", "Stellar",":)",
+            "You're unstoppable", "Inspirational", "Unbelievably good",
+            "Spectacular", "First-class", "Remarkable",
+            "You're a champ", "Keep up the fantastic work", "Breathtaking" };
+    
+    static String[] comfortingSentences = {
+            "Everything will be alright in the end ",
+            "You are stronger than you think ",
+            "You've got this! " ,
+            "Tomorrow is a new day.",
+            "You are not alone; I'm here for you "  ,
+            "Take a deep breath and relax " ,
+            "This too shall pass.",
+            "remeber that you are a diomned " ,
+            "You are loved and cherished.",
+            "Believe in yourself and your abilities " ,
+            "I'm proud of you for trying your best.",
+            "You are capable of great things ",
+            "I feel so sad for you ",
+            "I am sorry for you " , "I feel sad for you", "it is gonna be okay buddy",
+            "so sad!!" , "Oh nooooo",
+            "Stay strong and positive.",
+            "You have the power to overcome anything.",
+            "Embrace the challenges; they make you stronger.",
+            "Every setback is a setup for a comeback.",
+            "I believe in your strength and resilience.",
+            "Take a moment to acknowledge your progress.",
+            "Storms don't last forever; brighter days are ahead.",
+            "You're a rare gem; keep shining.",
+            "You're not defined by the tough times; you define them.",
+            "Your journey is unique, and so is your strength.",
+            "Success is not final, failure is not fatal; courage matters.",
+            "Celebrate the small victories; they lead to big triumphs.",
+            "Sending you positive vibes and good energy.",
+            "Mistakes are proof that you are trying; keep going.",
+            "Tomorrow brings new opportunities and possibilities.",
+            "Rise above the storm, and you will find sunshine.",
+            "The universe believes in your strength.",
+            "Every challenge is a stepping stone to success.",
+            "You are the architect of your own destiny.",
+            "Your potential is limitless.",
+            "You are a masterpiece in progress.",
+            "The best is yet to come.",
+            "You're not just surviving; you're thriving.",
+            "The sun will rise again, and so will you.",
+            "You're not weak for needing support; it's a sign of strength.",
+            "The world is better with you in it.",
+            "You have the courage to face whatever comes your way.",
+            "Believe in the magic within you.",
+            "Your heart knows the way; listen to it.",
+            "You're not alone in the struggle; reach out for support.",
+            "You're a warrior, not a worrier."};
+    
+   static String[] OffLimitsSentences = {//some of them could be funny responces
+    "Sorry, I don't understand your request.",
+    "I'm not capable of providing the information you're looking for.",
+    "I'm afraid I can't assist with that at the moment.",
+    "I'm off my limits in this context.",
+    "Hmm...", "I don't know",
+    "Ok", "Okay","Let's just have tea instead",
+    "Aha", "Sure", "if I just had magic",
+    "Got it", "Alright","Sure thing, if only I had a magical compiler.",
+    "Thanks", "No problem",
+    "You bet","I'm not programmed for this.",
+    "I apologize, but that's beyond me.",
+    "I appreciate your question, but it's not within my scope.","Hmm..","OK",
+    "I-","sorry I lost conection","so?","?????","My mom siad no", "oh","so what?","tell me more",
+    "I'm on a break; can we talk about something else?",
+    "My programming didn't cover that scenario.", "I'm not fluent in tea discussions; coffee is more my style.",
+    "Aha, let's switch to a more amusing topic.",
+    "No problem, but can we talk about pizza instead?","My mom said no to that request; sorry!",
+    "Hmm... I'm receiving mixed signals from my code.", "Can we talk about something with more ones and zeros?",
+    ":/",":)",":("};
+   
+   static String[] unkwonQoustions = {
+       "I appreciate your question, but it's in the 'mysterious' category.",
+       "That's a secret","I am not allowed to provide you with any information about this",
+       "ask me something else","I can't share details on that topic; it's a secret.",
+       "Your question involves sensitive, confidential details.",
+   };
+   
+   static String[] NotMeaningfull = {
+    "Make sure that your message is accurte","your message is not readble for me",
+    "I can't understand you, try agian","make your message meaningfull",
+    "Make sure that your message is accurate",
+    "Your message is not clear",
+    "I'm having difficulty understanding your message",
+    "Please provide a more CLEAR message",
+    "It seems like there might be a misunderstanding in your message",
+    "Ensure that your message is informative and relevant",
+    "It's challenging to extract meaning from your message",
+    "Please express your thoughts in a more coherent message",
+    "Your message appears to be unclear or nonsensical",
+    "Consider providing more context for better understanding in your message",
+    "I'm sorry, but your message is not making sense to me",
+    "Stick with ENGLISH please"
+   };
+   
+   static String[] NmbersReply = {
+    "I dont deal with numbers",
+    "Don't use numbers in your text ",
+    "I don't speak NUMBER language",
+    "I don't handle numbers.",
+    "Avoid using numbers, please.",
+    "Stick to text, I'm not good with numbers.",
+    "Numbers may confuse me, use words.",
+    "Express without numbers for clarity.",
+    "I struggle with numbers, use plain text.",
+    "Numeric input can be confusing, avoid it.",
+    "I'm not great with numbers, use text instead.",
+    "Avoid using numerical values, please.",
+    "I'm not fluent in numbers, use words.",
+    "Stick to plain text to avoid confusion.",
+    "Express your message without numbers.",
+    "Numeric input may lead to misinterpretation.",
+    "I'm not equipped for numerical input.",
+    "Avoid using numbers for better communication."
+   };
+   
+   static String[] thankYou = {
+       "You are welcome",
+       "You are always welcome","Don't mention it",
+       "always in your service","I am happy to help",
+       "welcome","Of course!","That's what I'm here for",
+       "I got your back","It's my duty","You can count on me",
+       "Always ready to help","I'm here if you need anything",
+       "My pleasure to assist you","nothing to be thanked for, it is my job",
+       "No problem","It was my pleasure","Anytime!","Glad I could assist",
+       "Happy to help","Not an issue","My pleasure","No worries","It's nothing",
+       "Think nothing of it","I am programmed to help you"
+   };
+
+    public static String message;
+    
+    Chatgbt(){ name = "Cherry";}//default ChatGbt name
+    Chatgbt(String name){
+        this.name = name;
+    }
+    
+   public void setName(String name){
+        this.name = name;
+    }
+   
+    
+    public static String getMessage(){
+        return message ;
+    }
+    
+    static void GenerateMessage(String Messages , boolean replayed){//zainab
+        Grammer grammer = new Grammer();
+        Scanner input = new Scanner(System.in);
+        boolean understood = false;
+        Messages = Messages.toUpperCase();
+       
+        
+           
+            Messages = Messages.toUpperCase();
+
+            if (Messages.equals("BYE")) {
+                understood = true; replayed = true;}
+            
+               if (Messages.trim().startsWith("SAY")){
+                understood = true; replayed = true;
+                System.out.println(Chatgbt.name+":" + Messages.substring(3)); return ;}
+            
+
+            else if (containsTargetWord(SadVocablury, Messages) && !replayed) {
+                int randomIndex = random3.nextInt(comfortingSentences.length);
+                System.out.println(Chatgbt.name+": "+comfortingSentences[randomIndex]);
+                understood = true; replayed = true;  }
+            
+            else if (containsWord(Messages,"THANK")){
+                understood = true; replayed = true;
+                int randomIndex = random3.nextInt(thankYou.length);
+                System.out.println(Chatgbt.name+": "+thankYou[randomIndex]); return ;}
+             
+             else if (containsTargetWord(HappyVocablury, Messages) && !replayed) {
+                int randomIndex = random3.nextInt(happyResponses.length);
+                System.out.println(Chatgbt.name+": "+happyResponses[randomIndex]);
+                understood = true; replayed = true;  }
+            
+           else if (containsWord(Messages,"PROBLEM") ||containsWord(Messages,"GLOW") ){
+                    String Problem;
+                    understood = true; replayed = true;
+                    System.out.println(Chatgbt.name +": Tell me about your problem?");
+                    
+                    System.out.print("you: "); Problem = input.nextLine();
+                    
+                    if(containsTargetWord( PROBLEMkeywords, Problem)){
+                        stateProblem(Problem);}}//problrm mode
+            
+            else if (containsWord(Messages,"ZAINAB")){
+                understood = true; replayed = true;
+                System.out.println(Chatgbt.name + ": she is the creator of this "+Chatgbt.name); return ;}
+            
+            else if (containsWord(Messages,"HOW") || containsWord(Messages,"?" ) || containsWord(Messages,"WHAT")  || containsWord(Messages,"DO" )){
+                understood = true; replayed = true;
+                int randomIndex = random3.nextInt(unkwonQoustions.length);
+                System.out.println(Chatgbt.name+": "+unkwonQoustions[randomIndex]);}
+            
+            else if (containsWord(Messages,"GAME") || containsWord(Messages,"GAMES" )){
+                understood = true; replayed = true;
+                System.out.println(Chatgbt.name + ": do you want to play a game? press 1");
+                int temp = input.nextInt();
+                 if (temp == 1) { games();} return ;}//game mode
+            
+            else if (containsTargetWord(Vocabgreetings, Messages)) {
+                greeting();
+                Chat.DsiplayMessage();
+                understood = true; replayed = true; return ; }
+               
+            else if(!grammer.isMeningfull(Messages)){
+                understood = true; replayed = true;
+                int randomIndex = random3.nextInt(NotMeaningfull.length);
+                System.out.println(Chatgbt.name+": "+NotMeaningfull[randomIndex]);}
+           
+            else if(grammer.containsNumber(Messages)){
+                understood = true; replayed = true;
+                int randomIndex = random3.nextInt(NmbersReply.length);
+                System.out.println(Chatgbt.name+": "+NmbersReply[randomIndex]);}
+            
+            else if(grammer.containSymbol(Messages)){
+                understood = true; replayed = true;
+                int randomIndex = random3.nextInt(NotMeaningfull.length);
+                System.out.println(Chatgbt.name+": "+NotMeaningfull[randomIndex]);}
+           
+            else if(grammer.isSingleLetter(Messages)){
+                understood = true; replayed = true;
+                System.out.println(Chatgbt.name+": "+Messages+"?");}
+               
+             else if(grammer.containsRepeatedLetter(Messages , 5)){
+                understood = true; replayed = true;
+                int randomIndex = random3.nextInt(NotMeaningfull.length);
+                System.out.println(Chatgbt.name+": "+NotMeaningfull[randomIndex]);}
+           
+    if (!understood && !replayed) {
+            int randomIndex = random3.nextInt(OffLimitsSentences.length);
+            System.out.println(Chatgbt.name+": "+OffLimitsSentences[randomIndex]); }
+
+           }//generate massege method
+    
+    static void greeting(){//zainab
+    String greetings [] = { "Hello " + Account.name , "Hey " + Account.name ,
+                          "Good Morning " + Account.name , "Hello! How can I assist you today " + Account.name + "?",
+                          "Thanks for giving us the privilege to honor your needs " + Account.name ,"hello " + Account.name ,
+                          "hi there, " + Account.name +"!",
+                          "hi " + Account.name,"hello, " + Account.name + "!",
+                          "hey " + Account.name, " hey, how can I help you, " + Account.name + "?",
+                          "good morning " + Account.name, " good morning to you too, " + Account.name + "!",
+                          "good afternoon " + Account.name , " good afternoon, " + Account.name + "!",
+                          "good evening " + Account.name , " good evening, what's up, " + Account.name + "?"};//greetings
+    Random greet = new Random();
+    int randomGreet;//evrey time the program works a random greeting will be generated
+    randomGreet = greet.nextInt(16);//generate a greetings between 0 to 16 index
+    message = greetings[randomGreet];//send the greeting to message
+    } //greeting
+    
+    public  static boolean containsTargetWord( String[] targetWords, String sentence) {//target is a word in array
+        String[] words = sentence.split(" ");
+        for (String word : words) {
+            for (String target : targetWords) {
+                if (word.equalsIgnoreCase(target)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public  static boolean containsWord(String sentence, String targetWord) {//target is a word
+        String[] words = sentence.split(" ");
+        for (String word : words) {
+            if (word.equalsIgnoreCase(targetWord)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    static void games(){
+        Random randomGames = new Random();
+
+        // Generate a random number either 1 or 2
+        int randomChoice = randomGames.nextInt(2) + 1;
+        
+       
+        switch (randomChoice) {
+            case 1 -> {
+        Random random4 = new Random();
+
+        int minRange = 1;
+        int maxRange = 100;
+        int numberToGuess = random4.nextInt(maxRange - minRange + 1) + minRange;
+        int attempts = 0;
+        int maxAttempts = 7;
+
+        System.out.println(Chatgbt.name+": "+"Welcome to the (Guess the Number) game");
+        System.out.println(Chatgbt.name+": "+"I'm thinking of a number between " + minRange + " and " + maxRange + ". Try to guess it.");
+
+        while (attempts < maxAttempts) {
+            System.out.print(Chatgbt.name+": "+"Enter your guess: ");
+            int userGuess = scanner.nextInt();
+
+            if (userGuess < minRange || userGuess > maxRange) {
+                System.out.println(Chatgbt.name+": "+"Try a number within the given range.");
+            } else if (userGuess == numberToGuess) {
+                System.out.println(Chatgbt.name+": "+"WOW! You did it, the number is: " + numberToGuess);
+                break;
+            } else {
+                attempts++;
+                System.out.println(Chatgbt.name+": "+"Incorrect guess. You have " + (maxAttempts - attempts) + " attempt(s) remaining.");
+                if (attempts == maxAttempts) {
+                    System.out.println(Chatgbt.name+": "+"You lost all your chances, The correct number was: " + numberToGuess);
+                } else if (userGuess < numberToGuess) {
+                    System.out.println(Chatgbt.name+": "+"Try a higher number.");
+                } else {
+                    System.out.println(Chatgbt.name+": "+"Try a lower number.");
+                }}}
+
+}
+            
+            case 2 -> {
+        Random random5 = new Random();
+
+        String[] choices = { "Rock", "Paper", "Scissors" };
+
+        System.out.println("This is 'Rock, Paper, Scissors' game!");
+
+        while (true) {
+            System.out.println("Enter your choice (Rock, Paper, Scissors): ");
+            String userChoice = scanner.nextLine();
+
+            if (!isValidChoice(userChoice)) {
+                System.out.println("Invalid choice. Please enter Rock, Paper, or Scissors.");
+                continue;
+            }
+
+            String ChatgbtChoice = choices[random5.nextInt(3)];
+
+            System.out.println(Chatgbt.name+"'s choice: " + ChatgbtChoice);
+            System.out.println("Your choice: " + userChoice);
+
+            String result = determineWinner(userChoice, ChatgbtChoice);
+            System.out.println(result);
+
+            System.out.print("Do you want to play again? (yes/no): ");
+            String playAgain = scanner.nextLine();
+            if (!playAgain.equalsIgnoreCase("yes")) { break; }}}
+            
+            default -> System.out.println("Sorry, an Error happend");
+        } }
+    
+
+private static boolean isValidChoice(String choice) {
+        return choice.equalsIgnoreCase("Rock")
+        || choice.equalsIgnoreCase("Paper")
+        || choice.equalsIgnoreCase("Scissors");}//for the rock game
+
+private static String determineWinner(String userChoice, String ChatGbtchoice) {
+        if (userChoice.equals(ChatGbtchoice)) {return Chatgbt.name+": "+"It's a tie!";}
+        else if ((userChoice.equals("Rock") && ChatGbtchoice.equals("Scissors"))
+                || (userChoice.equals("Scissors") && ChatGbtchoice.equals("Paper"))
+                || (userChoice.equals("Paper") && ChatGbtchoice.equals("Rock")))
+        {return Chatgbt.name+": "+"You win!";}
+        else {
+            return Chatgbt.name+": "+"Yaay I win!"; } }
+    
+    
+}//chatgbt class
+
+class Grammer{//zainab
+    
+    Grammer(){}
+    
+   public int countDuplicateLetters(String word) {
+        int[] letterOccurrences = new int[26]; // Assuming only lowercase letters
+
+        int duplicateCount = 0;
+
+        for (char c : word.toLowerCase().toCharArray()) {
+            if (Character.isLetter(c)) {
+                int index = c - 'a'; // Convert the letter to an index (0-25)
+                letterOccurrences[index]++;
+
+                // Check if the letter is repeated (occurs more than once)
+                if (letterOccurrences[index] == 2) {
+                    duplicateCount++;}}}
+
+        return duplicateCount;}
+    
+     public boolean isMeningfull(String userInput){
+        // Split the sentence into words with each spase \\s+
+        String[] words = userInput.split("\\s+");
+        int Count = 0;
+        // Process each word and count duplicate letters
+        for (String word : words) { Count = Count+countDuplicateLetters(word);}
+        
+        if (Count>3) {return false;}
+        else
+            return true;}
+    
+    public boolean containsNumber(String input) {
+        for (char c : input.toCharArray()) {
+            if (Character.isDigit(c)) {
+                return true;
+            }
+        }
+        return false;}
+    
+     boolean isSingleLetter(String input) {
+        if (input.length() == 1 && Character.isLetter(input.charAt(0))) {
+            return true;
+        }
+        return false;}
+     
+      public boolean containSymbol(String input) {
+        for (char c : input.toCharArray()) {
+        if (c >= 33 || c<=47) {return true;}
+        else if (c >= 91 || c<=96) {return true;}
+        else if (c >= 123 || c<=126) {return true;}
+        else if (c >= 58 || c<=64) {return true;}}
+      return false;}
+    
+    public  boolean containsRepeatedLetter(String word, int minRepetitionCount) {
+        // Use regex to check for any letter repeated more than the specified count
+        String regexPattern = "(\\p{L})\\1{" + (minRepetitionCount) + ",}";
+        Pattern pattern = Pattern.compile(regexPattern);
+        Matcher matcher = pattern.matcher(word);
+        return matcher.find();
+    }
+
+    
+    
+    
+}//class grammer
+
+
+
+class Account extends Chatgbt { //zahra alzaied, sukina al abbas, zainab alkhater
+    private int personID;
+    private final String date;
+    static public String name;// user name
+    private String phone;
+    private String email;
+    static int Accno = 0;
+    public boolean profile = false;
+    
+
+    // Constructor
+    public Account () {
+        // Initialize the object, if necessary
+        Date ACCdate = new Date();
+        date = ACCdate.toString();
+        this.name = "Stranger";
+        Accno++;
+    }
+    
+     public Account(String phone ,String email) {
+        this.phone = phone;
+        this.email = email;
+        Date ACCdate = new Date();
+        date = ACCdate.toString();
+        Accno++;
+    }
+
+    // Setter and getters methods
+    
+//    public void setPersonID(int personID) {
+//        this.personID = personID;
+//    }
+    public int getPersonID(){
+        return this.personID;
+    }
+    
+    void generateId(){//zainab
+    Random randomID = new Random();
+    boolean done = false;
+    int tempID;
+        while (!done) {
+            tempID = randomID.nextInt(9000);
+            if(tempID >= 1000){
+                this.personID = tempID; 
+                done = true;
+            }}}
+
+    public String getDate(){
+        return date;
+    }
+
+    @Override
+    public void setName(String name) {
+        Account.name = name;
+    }
+    public static  String getName(){//zahra
+        return Account.name;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getPhone(){
+        return this.phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+        
+    }
+    public String getEmail(){
+        return this.email;
+    } 
+    
+    @Override
+    public String toString(){//to return all infos as a string
+        //zainab
+         return "Account cearted:  " + getDate() +"\n" +"Account ID:  " 
+                + personID + "\n" + "Account name: " + this.name + "\n"+"Account phone:  " + phone 
+                + "\n" + "Account email: " + email;//zainab
+    }}//class Account
+
+class Problems{
+    static  String [] PROBLEMkeywords = {"NAIL" , "FEELING","EYELASHES", "LIPS", "FACE" ,"HAIR" };
+    static Scanner scanner = new Scanner(System.in);
+    
+    static void nails(){//zainab
+    
+
+            System.out.print("Choose a nail problem to solve:\n");
+            System.out.print("\n1. Split Nail");
+            System.out.print("\t\t2. Ingrown Nail");
+            System.out.print("\n3. Yellowing Nails");
+            System.out.print("\t4. Brittle Nails");
+            System.out.print("\n5. Nail Fungus");
+            System.out.print("\t\t6. Hangnail");
+            System.out.print("\n7. Ridges on Nails");
+            System.out.print("\t8. Discolored Nails");
+            System.out.print("\n9. Splitting Cuticles");
+            System.out.print("\t10. Nail Biting\n\nchoose a soultion: ");
+            
+
+            int choice = scanner.nextInt();
+
+             switch (choice) {
+            case 1 -> solveProblem("Split Nail", "Problem: Trim the split nail, file it gently to smooth the edges, and\napply a clear nail hardener to protect and reinforce the nail.");
+            case 2 -> solveProblem("Ingrown Nail", "Problem: Soak the affected finger in warm water, gently lift the ingrown edge, and\nplace a small piece of cotton under it to encourage proper growth. If severe, consult a doctor.");
+            case 3 -> solveProblem("Yellowing Nails", "Problem: Avoid smoking and limit exposure to nail-staining substances. Use a nail buffer to remove surface stains and\napply a nail strengthener to promote healthier growth.");
+            case 4 -> solveProblem("Brittle Nails", "Problem: Keep nails moisturized with a nail and cuticle oil, protect nails from harsh chemicals, and\nmaintain a balanced diet with adequate vitamins and minerals for nail health.");
+            case 5 -> solveProblem("Nail Fungus", "Problem: Consult a healthcare professional for antifungal treatments. Keep nails dry, clean, and avoid sharing nail care tools to\nprevent recurrence.");
+            case 6 -> solveProblem("Hangnail", "Problem: Soak the finger in warm water, gently trim the hangnail using sterilized nail clippers, and\napply an antibiotic ointment to prevent infection.");
+            case 7 -> solveProblem("Ridges on Nails", "Problem: Maintain a well-balanced diet rich in vitamins, minerals, and biotin. Consider using a ridge-filling base coat to\nsmooth the nail surface.");
+            case 8 -> solveProblem("Discolored Nails", "Problem: Identify the cause of discoloration (e.g., nail polish staining, health issues) and\naddress it accordingly. Use a nail buffer to remove surface stains if necessary.");
+            case 9 -> solveProblem("Splitting Cuticles", "Problem: Keep cuticles moisturized with cuticle oil, avoid excessive pushing or cutting, and\nSolutionuse a cuticle cream to promote healing.");
+            case 10 -> solveProblem("Nail Biting", "Problem: Use anti-nail-biting products (e.g., bitter-tasting nail polish), keep nails trimmed and well-maintained, and\nconsider seeking support to break the habit (e.g., therapy or counseling).");
+            case 0 -> System.out.println("Exiting the program.");
+            default -> System.out.println("Invalid choice. Please select a valid option.");
+        }
+
+}// nail method
+    
+    static void FeelingMood(){//zahra al-zaied
+            System.out.print("What are you feeling?\n");
+            System.out.print("\n1. lonely");
+            System.out.print("\t\t2.Anxious");
+            System.out.print("\n3.Depression");
+            System.out.print("\t\t4. lost");
+            System.out.print("\n5. Angery");
+           
+
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1 -> solveProblem("lonely","Talk to Someone: Share your feelings with a friend, family member, or therapist.\nSometimes expressing your thoughts and worries can provide relief.");
+                case 2 -> solveProblem("Anxious", "Positive Affirmations Remind yourself of positive affirmations.\nChallenge negative thoughts and replace them with more positive and constructive ones.n edge, and place a small piece of cotton under it to encourage proper growth. If severe, consult a doctor.");
+                case 3 -> solveProblem("Depression", "Challenge Negative Thoughts: Practice recognizing and challenging negative thoughts.\nTry to reframe them in a more positive or realistic light.");
+                case 4 -> solveProblem("lost", "Set Small Goals Break down your larger goals into smaller, more manageable tasks.\nThis can make them less overwhelming and help you regain a sense of control.");
+                case 5 -> solveProblem("Angery", "Step Back If possible, remove yourself from the situation that's triggering your anger.\nTake a break and give yourself some space to cool down.");
+ }}//Feeling
+    
+    static void eyeLashes(){//sukina
+    System.out.print("Choose a Eyelashes problem to solve:\n");
+            System.out.print("\n1. Eyelashes Loss");
+            System.out.print("\t\t2. Eyelashe Length ");
+           
+            System.out.print("\t10. Eyelashes Biting\n\nchoose a soultion: ");
+            
+
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1 -> solveProblem("Eyelashes Loss", "Consult a Doctor:Visit an ophthalmologist or dermatologist to assess the situation and identify the primary cause of eyelash loss.\nMaintain Cleanliness:Ensure proper eye hygiene .\nAvoid Irritation:Refrain from using cosmetics every day that may cause eye irritation.");
+                case 2 -> solveProblem("Eyelashe length ", "Eyelash Growth Products: Specialized products like eyelash serums contain beneficial ingredients that promote lash growth like (serum Rapid lash , Double lash from mavala )\nNutritional Care:Ensure a healthy diet rich in vitamins and minerals, especially vitamins A and E, which support lash health.\nAvoid Heavy Mascara. ");
+               
+                default -> System.out.println("Invalid choice. Please select a valid option.");
+            
+        }
+}//eyelases
+    
+     static void lips(){//sukina
+    System.out.print("Choose a Lips problem to solve:\n");
+            System.out.print("\n1. Chapped lips");
+            System.out.print("\t\t2. Dark Lips ");
+            System.out.print("\t3. Lips Biting\n\nchoose a soultion: ");
+            
+
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1 -> solveProblem("Chapped lips ", "Regularly apply a good-quality lip balm with moisturizing ingredients like shea butter from beesline.\nDrink plenty of water to keep your body, including your lips,well-hydrated.\nConsider applying a bit of vitamin E oil to your lips to help with healing.\nAvoid Licking Your Lips. ");
+                case 2 -> solveProblem("Dark Lips ", "Sun Protection: Applying lip sunscreens can reduce the impact of sun rays and help maintain natural lip color.\nUse of Lightening Products: Some products contain lip-lightening ingredients that offer brightening benefits.\nHealthy Nutrition: Maintain a healthy and balanced diet, as nutrition can influence lip health and color.");
+               
+                default -> System.out.println("Invalid choice. Please select a valid option.");
+            
+        }
+}
+     
+     static void face(){//Anfal
+        System.out.print("Choose a Face problem to solve:");
+        System.out.print("\n1. Acne");
+        System.out.print("\t\t2. Skin Blemishes");
+        System.out.print("\n3. Dark Spots");
+        System.out.print("\t4. Fine Lines and Wrinkles");
+        System.out.print("\n5. Redness and Irritation");
+
+        System.out.print("\nChoose a problem to address (1-5): ");
+           
+        int choice = scanner.nextInt();
+            
+        switch (choice) {
+            case 1:
+                solveProblem("Acne", "Use a gentle cleanser twice daily. Apply over-the-counter acne treatments with benzoyl peroxide or salicylic acid.");
+                break;
+            case 2:
+               solveProblem("Skin Blemishes", "Use a targeted spot treatment for blemishes. Incorporate products with ingredients like niacinamide or alpha hydroxy acids.");
+                break;
+            case 3:
+               solveProblem("Dark Spots", "Use a brightening serum with ingredients like vitamin C. Apply sunscreen to prevent further darkening of spots.");
+
+                break;
+             case 4:
+                solveProblem("Fine Lines and Wrinkles", "Use a retinol or retinoid product for collagen production. Apply a moisturizer with peptides to promote skin elasticity.");
+
+             case 5:
+                solveProblem("Redness and Irritation", "Use a calming and hydrating moisturizer. Avoid harsh ingredients and hot water. Consider products with soothing ingredients like chamomile or aloe vera.");
+                
+                break;
+            default:
+                System.out.println("Invalid choice. Please choose a valid option.");
+                break;}
+}
+     
+     static void hair(){//Haya
+       System.out.print("What hair problem do you want to solve?:");
+            System.out.print("\n1. Dandruff");
+            System.out.print("\t\t2. Hair loss");
+            System.out.print("\n3. Oily scalp");
+            System.out.print("\t4. Dry scalp");
+            System.out.print("\n5. Hair breakage");
+            System.out.print("\t\t6.Dull hair");
+            System.out.print("\n7. Hair color damage");
+            System.out.print("\t8. Heat damage");
+            
+
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1 -> solveProblem("Dandruff", "Regular cleansing with a gentle shampoo to reduce the buildup of oils and skin cells.");
+                case 2 -> solveProblem("Hair loss", "To get rid of hair loss, use some oils such as peppermint oil, rosemary, or nutritional supplements.");
+                case 3 -> solveProblem("Oily scalp", "To treat oily scalp, consider medical treatments if the problem is skin-related or try natural treatments such as green tea and tea tree oil. Follow a diet rich in fresh and healthy foods, clean your hair regularly without excessive rubbing, and avoid hair products with high levels of harmful chemicals.");
+                case 4 -> solveProblem("Dry scalp", "To get rid of dry scalp, massage the scalp with moisturizing and nourishing natural oils such as olive oil, sesame oil, or coconut oil.");
+                case 5 -> solveProblem("hair breakage", "Apply moisturizing hair masks, Use protective creams for hair while it is exposed to a hair dryer,Drink sufficient amounts of water on a daily basis,Stay away from foods rich in sugars, sodium, foods saturated with oils, as they make your hair dull and unhealthy.");
+                case 6 -> solveProblem("Dull hair", " Avoid using hot water when showering, Avoid excessive hair drying,Trim the ends of your hair regularly and Stay away from hair dyes.");
+                case 7 -> solveProblem("Hair color damage", " Use shampoos without sulfates, Apply a conditioner made especially for hair that has had color treatment,Choose professional-grade hair care products designed for color-treated hair and Avoid using excessive heat when styling your hair.");
+                case 8 -> solveProblem("Heat Damage", " Stop using heat,Eat foods rich in protein,Deep moisturize the hair with products like argan or coconut oil and Dry hair naturally with a bath towel and allow it to air dry.");
+                default -> System.out.println("Invalid choice. Please select a valid option.");
+}  }
+
+     
+     
+    
+    static void stateProblem(String sentence){//zainab
+        sentence = sentence.toUpperCase();
+        String[] words = sentence.split(" ");
+        int index =-1;
+        
+       for (int i = 0; i < words.length; i++) {
+        for (int j = 0; j < PROBLEMkeywords.length; j++) {
+            if (words[i].equalsIgnoreCase(PROBLEMkeywords[j])) {
+                index = j;
+                break;}}}
+       
+            switch (index) {
+                    case 0 -> {
+                        nails();
+                        System.out.println(Chatgbt.name+": was this helpful? ");
+            }
+                        
+                        case 1 -> {
+                            FeelingMood();
+                            System.out.println(Chatgbt.name+": was this helpful? ");
+            }
+                        
+                        case 2 -> {
+                            eyeLashes();
+                            System.out.println(Chatgbt.name+": was this helpful? ");
+            }
+                        
+                        case 3 -> {
+                            lips();
+                            System.out.println(Chatgbt.name+": was this helpful? ");
+            }
+                        
+                        case 4 -> {
+                            face();
+                            System.out.println(Chatgbt.name+": was this helpful? ");
+            }
+                        
+                         case 5 -> {
+                            hair();
+                            System.out.println(Chatgbt.name+": was this helpful? ");
+            }
+                          case 6 -> {
+                            face();
+                            System.out.println(Chatgbt.name+": was this helpful? ");
+            }
+
+                        
+                        
+                    default -> {}
+                }
+       
+    }//state problem method
+    private static void solveProblem(String problem, String solution) {//zainab
+        System.out.println(Chatgbt.name + "To GLOW up " + problem + "...");
+        System.out.println(Chatgbt.name+": "+solution);
+    }
+}//class problems
+
+class AdditonalServices{//zainab , zahra
+    
+    static void TodoList(boolean Listprogram){
+     ArrayList<String> TodoList = new ArrayList<>();
+     Scanner scanner = new Scanner(System.in);
+    
+
+        while (Listprogram == true) {
+            System.out.println("Choose an option:");
+            System.out.println("1. Add a Task");
+            System.out.println("2. Delete a Task");
+            System.out.println("3. Generate To-do List");
+            System.out.println("4. Exit");
+
+            int Mchoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (Mchoice) {
+                case 1:
+                    // Add Tasks
+                    String newTask;
+                    System.out.println("How many tasks do you want to add?");
+                    int NoTask = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline character
+                    for (int i = 0; i < NoTask; i++) {
+                        System.out.println("Enter your Task to add:");
+                        newTask = scanner.nextLine();
+                        TodoList.add(newTask);
+                    }
+                    break;
+                case 2:
+                    // Delete a word
+                    if (TodoList.isEmpty()) {
+                        System.out.println("list is empty.");
+                    } else {
+                        System.out.println("Enter the Number of the Task to delete:");
+                        int indexToDelete = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character
+                        if (indexToDelete >= 0 && indexToDelete < TodoList.size()) {
+                            String deletedWord = TodoList.remove(indexToDelete);
+                            System.out.println("Task deleted: " + deletedWord);
+                        } else {
+                            System.out.println("Invalid index. Please enter a valid index.");
+                        }
+                    }
+                    break;
+                case 3:
+                    // Save table to a text file and print
+                    printTable(TodoList);
+                    System.out.println("Enter the filename to save the LIST:");
+                    String filename = scanner.nextLine();
+                    saveAndPrintTable(TodoList, filename);
+                    System.out.println("LIST saved to " + filename);
+                    break;
+                case 4:
+                    // Exit
+                    Listprogram = false;
+                    break;
+                    
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
+            }
+        
+        if (!Listprogram) {
+            break; /*This breaks out of the do-while loop.*/ }}}
+    
+     static void saveAndPrintTable(ArrayList<String> TodoList, String fullPath) {//zainab
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath))) {
+            
+            if (TodoList.isEmpty()) { writer.write("List is empty.");}
+            else {
+                int maxWordLength = 0;
+                for (String word : TodoList) {
+                    maxWordLength = Math.max(maxWordLength, word.length());}
+
+                int tableWidth = maxWordLength + 10;
+
+                writer.write("Your To-do List:");
+                writer.newLine();
+                writer.write("+" + "-".repeat(tableWidth) + "+");
+                writer.newLine();
+                writer.write(String.format("| %3s | %-" + maxWordLength + "s |", "Index", "Word"));
+                writer.newLine();
+                writer.write("+" + "-".repeat(tableWidth) + "+");
+                writer.newLine();
+
+                for (int i = 0; i < TodoList.size(); i++) {
+                    writer.write("|");
+                    writer.write(String.format("%3d | %-" + maxWordLength + "s |", i, TodoList.get(i)));
+                    writer.newLine();
+                    writer.write("+" + "-".repeat(tableWidth) + "+");
+                    writer.newLine(); }}}
+        
+        catch (IOException e) {e.printStackTrace(); }}
+    
+     static void printTable(ArrayList<String> TodoList) {//zainab
+        if (TodoList.isEmpty()) {
+            System.out.println("List is empty.");}
+        else {
+            int maxWordLength = 0;
+            for (String word : TodoList) {
+                maxWordLength = Math.max(maxWordLength, word.length());}
+
+            int tableWidth = maxWordLength + 10;
+
+            System.out.println("Your To-do List:");
+            System.out.println("+" + "-".repeat(tableWidth) + "+");
+            System.out.printf("| %3s | %-" + maxWordLength + "s |\n", "Index", "Word");
+            System.out.println("+" + "-".repeat(tableWidth) + "+");
+
+            for (int i = 0; i < TodoList.size(); i++) {
+            System.out.printf("|%3d | %-" + maxWordLength + "s |\n", i, TodoList.get(i));
+            System.out.println("+" + "-".repeat(tableWidth) + "+"); }}}
+     
+      static void UsersReview(String ACCname) {//zainab //zahra
+    boolean riv = false;
+    Scanner scanner = new Scanner(System.in);
+        Date dateReview = new Date();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("GlowUP_User_Reviews.txt", true))) {
+            while (riv == false) {
+                System.out.println("Enter your review on our Glow up app ");
+                String review = scanner.nextLine();
+
+                writer.write(ACCname + ": " +review + "[ " + dateReview.toString()+" ]");
+                writer.newLine();
+                writer.newLine();
+                System.out.println("Review was sent successfully, Thank you " + ACCname + " !");
+                System.out.println("do you want to write another review? y/n");
+                String answer = scanner.next();
+                if (answer == "n") {riv = false; }
+                else{ riv = true;} }} 
+        
+        catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());}}
+}//service class
+
+class BodyMetrics extends ClientProfile {
+
+    private double height;
+    private double weight;
+    private int age;
+    private String gender;
+
+    
+    public BodyMetrics(double height, double weight, int age, String gender) {
+        super("",  "",  "");
+        this.height = height;
+        this.weight = weight;
+        this.age = age;
+        this.gender = gender;
+
+
+    }
+
+
+    public double calculateBMI() {
+
+        double heightInMeters = height / 100.0;
+        return weight / (heightInMeters * heightInMeters);
+    }
+
+
+    public double calculatePerfectWeight() {
+
+        double heightInMeters = height / 100.0;
+        // Calculating perfect weight based on the ideal BMI =  22
+        return 22 * (heightInMeters * heightInMeters);
+    }
+
+    public double calculateCalories() {
+        double perfectWeight = calculatePerfectWeight();
+        double calories;
+
+
+        if (calculateBMI() < 18.5) {
+            calories = perfectWeight * 30;
+        } else if (calculateBMI() >= 18.5 && calculateBMI() < 24.9) {
+            calories = perfectWeight * 25;
+        } else {
+            calories = perfectWeight * 20;
+        }
+
+        return calories;
+    }
+
+
+    public String getWorkoutRoutine() {
+        double bmi = calculateBMI();
+        int age = this.age;
+        String gender = this.gender.toLowerCase();
+
+        String workoutRoutine = "Workout Routine:\n";
+
+        if (bmi < 18.5) {
+            workoutRoutine += "For underweight individuals:\n";
+            workoutRoutine += "- Start with 20 minutes of light cardio, such as brisk walking.\n";
+            workoutRoutine += "- Include strength training with a focus on muscle building.\n";
+        } else if (bmi >= 18.5 && bmi < 24.9) {
+            workoutRoutine += "For individuals within the healthy weight range:\n";
+            workoutRoutine += "- Begin with 30 minutes of moderate-intensity cardio, like running or cycling.\n";
+            workoutRoutine += "- Incorporate a balanced mix of strength training for overall fitness.\n";
+        } else {
+            workoutRoutine += "For overweight or obese individuals:\n";
+            workoutRoutine += "- Start with 30 minutes of high-intensity interval training (HIIT) to boost metabolism.\n";
+            workoutRoutine += "- Focus on a combination of cardio and strength training for effective weight management.\n";
+        }
+
+        // workout based on age
+        if (age >= 40) {
+            workoutRoutine += "- Consider adding flexibility exercises, such as yoga, to maintain joint health.\n";
+        }
+
+
+        if (gender.equals("female")) {
+            workoutRoutine += "- Include exercises that promote bone density, like weight-bearing exercises.\n";
+        }
+
+        return workoutRoutine;
+    }
+
+    @Override
+    public String toString() {
+        double bmi = calculateBMI();
+        double perfectWeight = calculatePerfectWeight();
+        double calories = calculateCalories();
+        String workoutRoutine = getWorkoutRoutine();
+
+        return "BMI: " + String.format("%.2f", bmi) + "\nPerfect Weight: " + String.format("%.2f", perfectWeight)
+                + " kg\nCalories to Consume: " + String.format("%.2f", calories) + " kcal\n" + workoutRoutine;
+    }
+
+    public void setBodyMetricsInfo(double height, double weight, int age, String gender) {
+        setHeight(height);
+        setWeight(weight);
+        setAge(age);
+        setGender(gender);
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+}
+
+class ClientProfile {
+    private String name;
+    private String skinType;
+    private String hairType;
+    private int age;
+    private double height;
+    private double weight;
+
+    private String gender;
+
+    public ClientProfile() {
+    }
+
+    public ClientProfile(String name, String skinType, String hairType ) {
+        this.name = name;
+        this.skinType = skinType;
+        this.hairType = hairType;
+    }
+
+//for body class
+    public ClientProfile(double height, double weight, int age, String gender) {
+        this.height = height;
+        this.weight = weight;
+        this.age= age ;
+
+    }
+
+    /*public void displayProfile() {
+        System.out.println("Name: " + name);
+        System.out.println("Skin Type: " + (skinType != null ? skinType : "N/A"));
+        System.out.println("Hair Type: " + (hairType != null ? hairType : "N/A"));
+        System.out.println("Age: " + age);
+        System.out.println("Height: " + height + " cm");
+        System.out.println("Weight: " + weight + " kg");
+    }*/
+
+  //getter and setter
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSkinType() {
+        return skinType;
+    }
+
+    public void setSkinType(String skinType) {
+        this.skinType = skinType;
+    }
+
+    public String getHairType() {
+        return hairType;
+    }
+
+    public void setHairType(String hairType) {
+        this.hairType = hairType;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }}
+
+
+
+
+
+
+class Quizzes {//zainab //sukinah
+    
+    Scanner scanner = new Scanner(System.in);
+    
+        int oilyScore = 0;
+        int dryScore = 0;
+        int normalScore = 0;
+        int sensitiveScore = 0;
+        String Answer, Qoustion;
+        
+       Quizzes [] SkinList = new Quizzes[9];
+       Quizzes [] hairList = new Quizzes[10];
+       
+       Quizzes(){}
+       
+       Quizzes(String Qoustion, String Answer) {
+        this.Qoustion = Qoustion;
+        this.Answer = Answer; }
+
+       
+       
+
+    public void skinQuiz() {
+        
+        SkinList[0] = new Quizzes("How does your skin feel a few hours after cleansing?", "a) Oily\nb) Normal\nc) Dry\nd) Sensitive");
+        SkinList[1] = new Quizzes("How does your skin react to new skincare products?", "a) Usually breaks out\nb) No significant reaction\nd) Becomes red and irritated");
+        SkinList[2] = new Quizzes("How often do you need to apply moisturizer?", "a) Rarely\nb) Occasionally\nc) Frequently");
+        SkinList[3] = new Quizzes("How does your skin respond to sun exposure?", "a) Tans easily\nb) Tans gradually\nc) Burns easily\nd) Sensitive to sun");
+        SkinList[4] = new Quizzes("Do you have visible pores on your skin?", "a) Large and noticeable\nb) Medium-sized\nc) Small and barely visible");
+        SkinList[5] = new Quizzes("How does your skin feel in a climate with low humidity?", "a) Tight and uncomfortable\nb) Normal\nc) Dry and flaky");
+        SkinList[6] = new Quizzes("How often do you experience redness or irritation?", "a) Rarely\nb) Not much\nc) From time to time\nd) A lot!!");
+        SkinList[7] = new Quizzes("Do you often experience acne or blemishes?", "a) Frequently\nb) Not much\nc) Rarely\nd) Always!!");
+        SkinList[8] = new Quizzes("How does your skin feel during stressful periods?", "a) More oily\nb) No significant change\nc) Peeling!!\nd) Breaks out a lot");
+        System.out.println("Skin quiz");
+        for (int i = 0; i < 9; i++) {
+            System.out.println(SkinList[i].Qoustion);
+            System.out.println(SkinList[i].Answer);
+            char userAnswer = scanner.next().charAt(0);
+            updateScores(userAnswer);}
+
+        System.out.println("\nQuiz Completed! Calculating results...");
+
+        String skinType = determineType(oilyScore, dryScore, normalScore, sensitiveScore);
+        System.out.println("Your skin type is: " + skinType); }
+
+    public void hairQuiz() {
+         // Adding hair quiz questions to the array
+        hairList[0] = new Quizzes("How does your scalp feel a day after washing your hair?", "a) Oily\nb) Normal\nc) Dry\nd) Sensitive");
+        hairList[1] = new Quizzes("How does your hair react to different shampoos?", "a) Becomes greasy quickly\nb) No significant change\nc) Becomes frizzy");
+        hairList[2] = new Quizzes("How often do you use heat styling tools (e.g., straighteners, curling irons)?", "a) Regularly\nb) Not much\nc) Always\nd) Rarely");
+        hairList[3] = new Quizzes("How does your hair feel after using conditioner?", "a) Heavy or greasy\nb) Soft and manageable\nc) Still dry and tangled");
+        hairList[4] = new Quizzes("Do you experience split ends?", "a) Rarely\nb) Occasionally\nc) Frequently");
+        hairList[5] = new Quizzes("How often do you get your hair trimmed?", "a) Rarely\nb) Occasionally\nc) Regularly");
+        hairList[6] = new Quizzes("How does your hair feel in humid weather?", "a) Flat and oily\nb) No significant change\nc) Frizz frizzy");
+        hairList[7] = new Quizzes("Do you color or chemically treat your hair?", "a) Yes, frequently\nb) Yes, occasionally\nc) No, I can't");
+        hairList[8] = new Quizzes("How often do you brush your hair?", "a) Not much\nb) Once a day\nc) Multiple times a day");
+        hairList[9] = new Quizzes("How does your hair react to air-drying?", "a) Takes a long time to dry\nb) Dries evenly\nc) Becomes frizzy so fast");
+        System.out.println("\nHair Quiz:");
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println(hairList[i].Qoustion);
+            System.out.println(hairList[i].Answer);
+            char userAnswer = scanner.next().charAt(0);
+            updateScores(userAnswer);}
+
+        String hairType = determineType(oilyScore, dryScore, normalScore, sensitiveScore);
+        System.out.println("Your hair type is: " + hairType);}
+
+    private void updateScores(char answer) {
+        switch (answer) {
+            case 'a':
+                oilyScore++;
+                break;
+            case 'b':
+                 normalScore++;
+                
+                break;
+            case 'c':
+               dryScore++;
+                break;
+            case 'd':
+                sensitiveScore++;
+                break;
+            default:
+                System.out.println("You did not choose correctly.");
+        }
+    }
+
+    public  String determineType(int oilyScore, int dryScore, int normalScore, int sensitiveScore) {
+        int maxScore = Math.max(Math.max(oilyScore, dryScore), Math.max(normalScore, sensitiveScore));
+
+        if (maxScore == oilyScore) {
+            return "Oily";} 
+        else if (maxScore == dryScore) {
+            return "Dry";}
+        else if (maxScore == normalScore) {
+            return "Normal";} 
+        else {
+            return "Sensitive";}}
+
+ 
+}//class quizzez
+
+
+class HairCareProgram extends ClientProfile{
+    Quizzes quizzes = new Quizzes();
+
+    public HairCareProgram(String name, String hairType ) {
+        super(name,null,hairType);}
+    Scanner in = new Scanner(System.in);
+
+    public HairCareProgram() {
+        super();
+    }
+
+    void HairCare() {
+        System.out.println("Welcome to the Hair Care Program!");
+        quizzes.hairQuiz();
+        boolean continueP = true;
+
+        while (continueP) {
+            HairProblems();
+            int choice = getUserChoice();
+            UserChoice(choice);
+
+            System.out.print("\nDo you want to solve another problem? (yes/no): ");
+            String cChoice = in.next().toLowerCase();
+
+            if (cChoice.equals("no")) {
+                continueP = false;
+                System.out.println("Thank you for using the Hair Care Program. \nSee You Later ;) ");
+            }
+        }
+    }
+
+    void HairProblems() {
+        System.out.println("\nWhat hair problem do you want to solve?");
+        System.out.println("1- Dandruff\n2- Hair loss\n3- Oily scalp\n4- Dry scalp\n5- Hair breakage\n6- Dull hair\n7- Hair color damage\n8- Heat damage");
+    }
+
+    int getUserChoice() {
+        System.out.print("Enter your choice (1-8): ");
+        return in.nextInt();
+    }
+
+    void Psolution(String problem, String solution) {
+        System.out.println("\nSolution for " + problem + ":\n" + solution);
+    }
+
+    void UserChoice(int choice) {
+        switch(choice) {
+            case 1:
+                Psolution("Dandruff", "Regular cleansing with a gentle shampoo to reduce the buildup of oils and skin cells.");
+                break;
+            case 2:
+                Psolution("Hair loss", "To get rid of hair loss,\n use some oils such as \npeppermint oil, rosemary, or nutritional supplements.");
+                break;
+            case 3:
+                Psolution("Oily scalp", "To treat oily scalp,\nconsider medical treatments if the problem is skin-related \nor try natural treatments such as green tea and tea tree oil.\nFollow a diet rich in fresh and healthy foods, \nclean your hair regularly without excessive rubbing,\nand avoid hair products with high levels of harmful chemicals.");
+                break;
+            case 4:
+                Psolution("Dry scalp", "To get rid of dry scalp, \nmassage the scalp with moisturizing and nourishing natural oils such as\n olive oil, sesame oil, or coconut oil.");
+                break;
+            case 5:
+                hairsol();
+                break;
+            case 6:
+                hairsol1();
+                break;
+
+            case 7:
+                hairsol2();
+                break;
+            case 8:
+                hairsol3();
+                break;
+
+            default:
+                System.out.println("Invalid choice. Please enter a number between 1 and 8.");
+        }
+    }
+
+
+
+    void hairsol() {
+        System.out.println("\nSolutions for your problem (hair breakage):\n" +
+                "1. Apply moisturizing hair masks.\n" +
+                "2. Use protective creams for hair while it is exposed to a hair dryer.\n" +
+                "3. Drink sufficient amounts of water on a daily basis.\n" +
+                "4. Stay away from foods rich in sugars, sodium, and foods saturated with oils, as they make your hair dull and unhealthy.");
+    }
+
+    void hairsol1() {
+        System.out.println("\nSolutions for your problem ( Dull hair):\n" +
+                "1. Avoid using hot water when showering.\n" +
+                "2. Avoid excessive hair drying.\n" +
+                "3. Trim the ends of your hair regularly.\n" +
+                "4. Stay away from hair dyes.");
+    }
+
+    void hairsol2() {
+        System.out.println("\nSolutions for your problem ( Hair color damage):\n" +
+                "1. Use shampoos without sulfates.\n" +
+                "2. Apply a conditioner made especially for hair that has had color treatment.\n" +
+                "3. Choose professional-grade hair care products that are designed especially for color-treated hair.\n" +
+                "4. Don't use excessive heat when styling your hair.");
+
+    }
+    void hairsol3() {
+        System.out.println("\nSolutions for your problem (Heat Damage):\n" +
+                "1.Stop using heat.\n" +
+                "2. Eat foods rich in protein.\n" +
+                "3. Deep moisturizing of the hair, such as argan or coconut oil.\n" +
+                "4. Dry hair naturally with a bath towel and leave it to air.");
+    }
+
+    public void setHairCareInfo(String name, String hairType) {
+        setName(name);
+        setHairType(hairType);
+    }
+}
+
+
+class SkinCareProgram02 extends ClientProfile {
+
+       SkinCareProgram02(){}
+       
+    public SkinCareProgram02(String name, String skinType ) {
+        super(name, skinType, null);
+
+    }
+
+
+    public void runSkinCareProgram() {
+        //instance of the Quizzes class
+        Quizzes quizzes = new Quizzes();
+
+        quizzes.skinQuiz();
+
+        String skinType = quizzes.determineType(quizzes.oilyScore, quizzes.dryScore, quizzes.normalScore, quizzes.sensitiveScore);
+
+        provideSkinCareRoutine(skinType);
+    }
+
+
+    private static void provideSkinCareRoutine(String skinType) {
+        System.out.println("Here is a suggested skin care routine :");
+
+
+        if (skinType.equals("Dry")) {
+            System.out.println("1. Use a gentle cleanser.");
+            System.out.println("2. Apply a moisturizer regularly.");
+            System.out.println("3. Drink plenty of water.");
+        } else if (skinType.equals("Oily")) {
+            System.out.println("1. Use a mild foaming cleanser.");
+            System.out.println("2. Use oil-free moisturizers.");
+            System.out.println("3. Avoid heavy, oil-based products.");
+        } else if (skinType.equals("Sensitive")) {
+            System.out.println("1. Use fragrance-free and hypoallergenic products.");
+            System.out.println("2. Avoid harsh exfoliants.");
+            System.out.println("3. Patch test new products before applying to the entire face.");
+        } else if (skinType.equals("Normal")) {
+            System.out.println("skincare for normal skin ");
+        }
+        else
+            System.out.println("you have perfect skin,LUCKY YOU!!");
+
+    }
+
+
+    public static String getUserInput(Scanner scanner) {
+        String userAnswer;
+        do {
+            System.out.print("Enter 'yes' or 'no': ");
+            userAnswer = scanner.nextLine().toLowerCase();
+        } while (!userAnswer.equals("yes") && !userAnswer.equals("no"));
+
+        return userAnswer;
+    }
+
+    public static void identifySkinProblem(int yesCount) {
+        System.out.println("\nIdentifying potential skin problem...");
+
+
+        if (yesCount >= 15) {
+            System.out.println("Based on your responses, you may have a severe skin condition. Please consult a dermatologist.");
+        } else if (yesCount >= 8) {
+            System.out.println("Based on your responses, you may have a moderate skin condition. Consider seeing a dermatologist for further evaluation.");
+        } else {
+            System.out.println("Based on your responses, your skin condition appears to be mild. However, if you have concerns, consult with a dermatologist for professional advice.");
+        }
+    }
+
+    public void setSkincareInfo(String name, String skinType) {
+        setName(name);
+        setSkinType(skinType);
+    }}
+
+
+class Product {//anfal
+    
+    // Instance variables
+    private String productName;
+    private String userName;
+    private int rating;
+    private String comment;
+    
+    Product(){}
+    
+    Product(String userName){
+        this.userName = userName;}
+    
+    public void productRivew() {
+        
+        
+   
+        Scanner scanner = new Scanner(System.in);
+
+
+        Product productReview = new Product();
+
+        
+        System.out.print("Enter Rating: ");
+        productReview.setRating(scanner.nextInt());
+
+        scanner.nextLine(); // Consume the newline character left by nextInt()
+
+        System.out.print("Enter Comment: ");
+        productReview.setComment(scanner.nextLine());
+
+       
+
+        // Printing the review details
+        System.out.println("\nReview Details:");
+        System.out.println("Rating: " + productReview.getRating());
+        System.out.println("Comment: " + productReview.getComment());    }
+
+    
+
+    // Getter and setter methods
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    
+public void product(){
+      
+String filePath = "";
+
+        Scanner scanner = new Scanner(System.in);
+        
+ 
+
+        // Display menu
+        System.out.println("Select a category:");
+        System.out.println("1. Oily skin product");
+        System.out.println("2. Dry skin product");
+        System.out.println("3. Sensitive skin products");
+        System.out.println("4. Normal skin products");
+        System.out.println("5. Take a test to know your skin type");
+
+        // Get user input for category
+        System.out.print("Enter the category number: ");
+        int type = scanner.nextInt();
+
+        String sectionHeader = null;
+
+        switch (type) {
+            case 1:
+                sectionHeader = "Oily skin product";
+                filePath = "C:/Users/zaina/Desktop/glowaupapp/skin care products/OILY.txt/";
+                break;
+            case 2:
+                filePath = "C:/Users/zaina/Desktop/glowaupapp/skin care products/DRY.txt/";
+                sectionHeader = "Dry skin product";
+                break;
+            case 3:
+                filePath = "C:/Users/zaina/Desktop/glowaupapp/skin care products/SENSTIVE.txt/";
+                sectionHeader = "Sensitive skin products";
+                break;
+            case 4:
+                filePath = "C:/Users/zaina/Desktop/glowaupapp/skin care products/NORMAL.txt/";
+                sectionHeader = "Normal skin products";
+                break;
+                
+                case 5:{
+                Quizzes skin = new Quizzes();//Association
+                skin.skinQuiz();
+                break;}
+                
+            default:
+                System.out.println("Invalid category number");
+                System.exit(0);
+        }
+
+        SkinCareProductExtractor extractor = new SkinCareProductExtractor();
+        String sectionText = extractor.extractSectionFromFile(filePath, sectionHeader);
+
+        if (sectionText != null) {System.out.println(sectionText +"\n");} 
+        else {System.out.println("Section not found in the file.");}}}
+
+class SkinCareProductExtractor {//anfal
+
+    public String extractSectionFromFile(String filePath, String sectionHeader) {
+        StringBuilder sectionText = new StringBuilder();
+        boolean isInSection = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(sectionHeader)) {
+                    isInSection = true;
+                }
+
+                if (isInSection) {
+                    sectionText.append(line).append("\n");
+                }
+
+                // Stop reading when the next section starts
+                if (line.startsWith("*")) {
+                    break;
+                }
+            }} 
+        
+        catch (IOException e) {e.printStackTrace(); }
+
+        return sectionText.toString().trim();
+    }
+}
+
+abstract class HealthChallenge {
+    private String participantName;
+
+    public HealthChallenge(String participantName) {
+        this.participantName = participantName;
+    }
+
+    public String getParticipantName() {
+        return participantName;
+    }
+    public abstract void startChallenge();
+    public void challengeCompleted() {
+        System.out.println("Congratulations, " + participantName + "! You have completed the challenge.");
+    }
+}
+
+class WeightManagementChallenge extends HealthChallenge {
+    private double targetWeight;
+
+    public WeightManagementChallenge(String participantName, double targetWeight) {
+        super(participantName);
+        this.targetWeight = targetWeight;
+    }
+
+    @Override
+    public void startChallenge() {
+        System.out.println("Welcome, " + getParticipantName() + "! Your weight management challenge has started.");
+        System.out.println("You have reached your target weight of " + targetWeight + " kg!");
+        challengeCompleted();
+    }
+}
+
+class SkinIssuesChallenge extends HealthChallenge {
+    public SkinIssuesChallenge(String participantName) {
+        super(participantName);
+    }
+    @Override
+    public void startChallenge() {
+        System.out.println("Welcome, " + getParticipantName() + "! Your skin issues challenge has started.");
+        // Add your skin issues challenge implementation here
+        // Example: providing skincare routine, recommending skincare products, etc.
+        System.out.println("Your skin issues are resolved!");
+        challengeCompleted();
+    }
+}
+
+
+package Google;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import java.util.Scanner;
+
+ /*these imports work with the jousb library which is installed and
+   added to this project*/
+
+/**
+ *
+ * @author zainab
+ */
+public class Websearch {
+    
+    public static void main(String[] args) {}
+    
+    
+    public static void search(){
+        Scanner scanner = new Scanner(System.in);
+        
+                QuestionAnsweringSystem qaSystem = new QuestionAnsweringSystem();
+
+
+                Scanner in = new Scanner(System.in);
+
+
+                System.out.print("Enter your question: ");
+                String question = in.nextLine();
+
+
+                String answer = qaSystem.searchForAnswer(question);
+
+
+                System.out.println("Answer: " + answer);
+    }
+    
+  
+}
+
+
+
+class QuestionAnsweringSystem {
+    private static final String SEARCH_API_URL = "https://www.google.com/search?q=";
+
+    public String searchForAnswer(String question) {
+        try {
+            String answer = searchInURL(question);
+            if (answer != null && !answer.isEmpty()) {
+                return answer;
+            }
+
+            answer = searchInGoogle(question);
+            if (answer != null && !answer.isEmpty()) {
+                return answer;
+            }
+
+            return "Sorry, I couldn't find an answer to your question.";
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "Sorry, an error occurred while searching for the answer.";
+    }
+
+    private String searchInURL(String question) throws IOException {
+        URL url = new URL("https://intothegloss.com/");
+        Document doc = Jsoup.parse(url, 3000);
+
+        
+        Elements contentElements = doc.getElementsContainingText(question);
+        if (!contentElements.isEmpty()) {
+            return contentElements.first().text();
+        }
+
+        return null;
+    }
+
+    private String searchInGoogle(String question) throws IOException {
+        // Create the URL for the search query
+        String encodedQuery = URLEncoder.encode(question, "UTF-8");
+        URL url = new URL(SEARCH_API_URL + encodedQuery);
+
+
+        Document doc = Jsoup.connect(url.toString()).get();
+
+
+        Elements answerElements = doc.getElementsByClass("answer");
+        if (!answerElements.isEmpty()) {
+            return answerElements.first().text();
+        }
+
+        return null;
+    }}
+
+
